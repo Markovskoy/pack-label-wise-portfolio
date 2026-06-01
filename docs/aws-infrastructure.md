@@ -1,4 +1,6 @@
-# AWS Infrastructure
+# AWS Infrastructure & IaC
+
+[Back to Home](index.md){ .md-button .nav-button }
 
 This repository documents a compact AWS setup built around the needs of a private production web application. The public pages use placeholders only, but the infrastructure shape is real enough to explain how the platform is delivered and why each component exists.
 
@@ -16,6 +18,12 @@ The backup bucket is split from frontend artifacts on purpose. Static site asset
 
 There is also an optional helper path for uploading PPT or PPTX source files through a Lambda-to-private-S3 flow. I kept that in the architecture because it shows how small serverless components can be used without turning the whole platform into a serverless system.
 
+## Infrastructure as Code
+
+Terraform is presented here as a public-safe skeleton rather than as a drop-in production repository. It shows the main pieces of the AWS layout clearly: the S3 frontend bucket, separate backup bucket, CloudFront distribution, Route53 records, IAM deploy policy, and the EC2 application host.
+
+Real account IDs, bucket names, production identifiers, and environment-specific values are intentionally not published. The point of the Terraform directory is to show the IaC approach, module wiring, and overall infrastructure shape without exposing sensitive production detail or pretending the public repo should be applied as-is.
+
 ## IAM And Exposure Model
 
 Automation only needs a narrow set of AWS permissions: object access for the frontend bucket and CloudFront invalidation for release jobs. Everything else should stay out of the deploy identity. SSH access to the VM should use a dedicated deploy user and be restricted to controlled source ranges where possible. PostgreSQL is never treated as a public Internet-facing service.
@@ -23,3 +31,5 @@ Automation only needs a narrow set of AWS permissions: object access for the fro
 ## Why This Is A Good Portfolio Baseline
 
 I wanted the AWS story to feel grounded. This is not a giant reference architecture copied from a vendor diagram. It is a believable production baseline for an application that has a real business workflow, moderate infrastructure needs, and room to evolve. The repository shows the current state honestly and leaves a visible path toward stronger isolation, managed database services, and more mature observability later.
+
+[Back to Home](index.md){ .md-button .nav-button }

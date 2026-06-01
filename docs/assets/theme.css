@@ -23,16 +23,8 @@
   box-shadow: none;
 }
 
-.md-tabs,
 .md-search,
-.md-header__source,
-.md-sidebar,
-.md-sidebar--primary,
-.md-sidebar--secondary,
-.md-content__button,
-.md-footer,
-.md-nav--secondary,
-.md-nav--primary {
+.md-header__source {
   display: none !important;
 }
 
@@ -64,7 +56,7 @@
 }
 
 .md-typeset img {
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1px solid rgba(138, 177, 255, 0.1);
   background: #101827;
 }
@@ -77,63 +69,28 @@
   text-decoration: underline;
 }
 
-.hero-panel {
-  padding: 24px;
-  border: 1px solid var(--lm-line);
-  border-radius: 16px;
-  background: var(--lm-surface);
-  margin: 0 0 24px;
-}
-
-.hero-kicker {
-  display: inline-flex;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #dce7ff;
-  background: rgba(138, 177, 255, 0.08);
-  border: 1px solid rgba(138, 177, 255, 0.12);
-}
-
-.hero-panel h1 {
-  margin: 14px 0 12px;
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
-.hero-panel p {
-  font-size: 1rem;
-  max-width: 920px;
-}
-
-.hero-meta {
+.link-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 18px 0 0;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
 }
 
-.hero-meta span {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
+.md-typeset .md-button {
   border-radius: 999px;
-  border: 1px solid rgba(138, 177, 255, 0.14);
-  background: rgba(255, 255, 255, 0.03);
-  color: #dfe8ff;
-  font-size: 0.86rem;
 }
 
-.md-typeset .admonition,
-.md-typeset details,
-.hero-panel {
-  border-radius: 14px;
-  background: var(--lm-surface);
+.md-typeset .nav-button {
+  margin: 0.25rem 0.5rem 0.5rem 0;
+}
+
+.md-nav__link--active,
+.md-tabs__link--active {
+  font-weight: 700;
 }
 
 @media screen and (max-width: 600px) {
-  .hero-panel h1 {
-    font-size: 1.6rem;
+  .link-row {
+    flex-direction: column;
   }
 }

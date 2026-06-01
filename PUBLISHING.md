@@ -65,7 +65,7 @@ Do not replace infrastructure placeholders like `<aws-account-id>` or `<cloudfro
 
 ### Title
 
-`PackLabel / LabelMaster - AWS DevOps & SRE Case Study`
+`LabelMaster / Potaglab - AWS DevOps & SRE Case Study`
 
 ### Description
 

@@ -6,6 +6,8 @@ theme:
   name: material
   language: en
   custom_dir: docs/overrides
+  features:
+    - navigation.footer
   palette:
     - scheme: slate
       primary: indigo
@@ -22,6 +24,12 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Architecture: architecture.md
+  - AWS Infrastructure & IaC: aws-infrastructure.md
+  - CI/CD: cicd.md
+  - Database & Backups: database.md
+  - Security: security.md
+  - SRE / Operability: sre-operability.md
 
 extra_css:
   - assets/theme.css

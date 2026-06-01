@@ -1,6 +1,8 @@
 # Architecture
 
-![LabelMaster architecture](assets/architecture-diagram.svg)
+[Back to Home](index.md){ .md-button .nav-button }
+
+![LabelMaster / Potaglab architecture](assets/architecture-diagram.svg)
 
 The production shape behind this portfolio is intentionally pragmatic. The frontend is a static SPA served from S3 through CloudFront, the API runs on a single EC2 host, Caddy handles the public entry point and TLS for the backend, and PostgreSQL 16 stays private inside the same Docker Compose stack. That layout is not meant to imitate a hyperscale system. It is meant to keep the early production footprint understandable, cheap, and operationally predictable.
 
@@ -12,6 +14,16 @@ The split between frontend delivery and API runtime is doing most of the useful 
 - API domain -> Route53 -> EC2 -> Caddy -> backend container -> PostgreSQL 16
 - GitHub Actions -> S3/CloudFront deploy + SSH backend deploy + controlled migrations
 - Backups -> separate S3 backup bucket
+
+## Diagram Walkthrough
+
+The top-left path is the frontend delivery route. Users hit the public domain, Route53 resolves the record, CloudFront handles TLS and edge caching, and the built SPA is served from the S3 frontend bucket. This keeps static delivery decoupled from the application host and makes cache invalidation part of the release process instead of part of backend runtime behavior.
+
+The API path is intentionally separate. A dedicated API hostname resolves through Route53 to the EC2 application host, where Caddy terminates TLS and forwards requests to the backend container. PostgreSQL 16 stays private behind that runtime boundary and is only reachable from the application stack.
+
+The lower release lane shows how GitHub Actions interacts with the system. Frontend artifacts are deployed to S3 and invalidated in CloudFront, while backend updates go through SSH-driven deployment on the EC2 host. Migrations are kept as an explicit controlled step because they change the rollback story more than static assets or container refreshes.
+
+The backup bucket is drawn separately on purpose. Database dumps are not mixed with frontend artifacts, which keeps retention, access policy, and recovery workflows easier to reason about.
 
 ## Request Paths
 
@@ -40,3 +52,5 @@ The public repository intentionally omits the proprietary backend, but the front
 ## What Is Deliberately Missing
 
 The private product logic, the real schema, real operational naming, customer data, and exact production identifiers are not part of this repository. The goal is to preserve the engineering story, not to publish sensitive implementation detail.
+
+[Back to Home](index.md){ .md-button .nav-button }

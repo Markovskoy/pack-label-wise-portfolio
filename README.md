@@ -8,7 +8,7 @@ I used this project to demonstrate the part I owned directly: packaging the runt
 
 The production-facing website is available at [potaglab.com](https://potaglab.com). This portfolio repo documents the platform around it rather than mirroring the proprietary application code.
 
-![Architecture diagram](docs/assets/architecture-diagram.svg)
+![LabelMaster / Potaglab architecture](docs/assets/architecture-diagram.svg)
 
 More detail lives in the MkDocs site under `docs/`:
 
