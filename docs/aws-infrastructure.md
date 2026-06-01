@@ -10,6 +10,8 @@ The API follows a different path. It is routed to an EC2 instance that runs Cadd
 
 The public-safe Terraform under [`infra/terraform/`](https://github.com/Markovskoy/pack-label-wise-portfolio/tree/main/infra/terraform) models the most visible parts of the stack: the frontend bucket, backup bucket, CloudFront distribution, Route53 records, IAM deploy policy, and the EC2 application host. The examples use ready-made upstream modules where that makes the repository look like a realistic Terraform consumer rather than a handwritten exercise from scratch.
 
+That is also the point of showing Terraform here in this form. It is closer to normal engineering work: use stable upstream modules, wire them together around project inputs, keep the structure readable, and let Terraform remain the source of truth for the AWS side of the platform.
+
 The backup bucket is split from frontend artifacts on purpose. Static site assets and database dumps have different retention, sensitivity, and restore workflows, so keeping them separate makes both IAM and operations easier to reason about.
 
 There is also an optional helper path for uploading PPT or PPTX source files through a Lambda-to-private-S3 flow. I kept that in the architecture because it shows how small serverless components can be used without turning the whole platform into a serverless system.

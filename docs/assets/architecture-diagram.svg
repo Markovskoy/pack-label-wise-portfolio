@@ -1,92 +1,85 @@
-<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="160" y1="110" x2="1450" y2="780" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#131C33"/>
-      <stop offset="0.55" stop-color="#1A2747"/>
-      <stop offset="1" stop-color="#243C75"/>
+    <linearGradient id="bg" x1="700" y1="0" x2="700" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#17213A"/>
     </linearGradient>
-    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#4C6FFF"/>
-      <stop offset="1" stop-color="#7358FF"/>
+    <linearGradient id="lineBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#6B8CFF"/>
+      <stop offset="1" stop-color="#8AB1FF"/>
     </linearGradient>
-    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#FFB357"/>
+    <linearGradient id="lineOrange" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#FFB257"/>
       <stop offset="1" stop-color="#FF9E3D"/>
     </linearGradient>
-    <filter id="shadow" x="0" y="0" width="1600" height="980" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="18" stdDeviation="26" flood-color="#07101F" flood-opacity="0.28"/>
+    <filter id="shadow" x="0" y="0" width="1400" height="920" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#020617" flood-opacity="0.35"/>
     </filter>
   </defs>
 
-  <rect width="1600" height="980" rx="42" fill="#EEF2FF"/>
-  <rect x="50" y="42" width="1500" height="230" rx="34" fill="url(#bg)"/>
-  <circle cx="1320" cy="155" r="96" fill="#FFFFFF" fill-opacity="0.1"/>
-  <circle cx="1390" cy="110" r="34" fill="#FFFFFF" fill-opacity="0.06"/>
+  <rect width="1400" height="920" rx="28" fill="url(#bg)"/>
 
-  <text x="110" y="112" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">LabelMaster / Potaglab</text>
-  <text x="110" y="176" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800">AWS Delivery Architecture</text>
-  <text x="110" y="228" fill="#D7E1FF" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="500">Sanitized portfolio view of CDN delivery, VM runtime, PostgreSQL operations, and CI/CD boundaries</text>
+  <text x="72" y="88" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">LabelMaster / Potaglab</text>
+  <text x="72" y="136" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Sanitized AWS delivery architecture for the public portfolio repository</text>
 
   <g filter="url(#shadow)">
-    <rect x="92" y="368" width="270" height="180" rx="28" fill="#FFFFFF"/>
-    <rect x="404" y="368" width="270" height="180" rx="28" fill="#FFFFFF"/>
-    <rect x="1238" y="368" width="270" height="180" rx="28" fill="#FFFFFF"/>
-    <rect x="92" y="598" width="270" height="180" rx="28" fill="#FFFFFF"/>
-    <rect x="404" y="598" width="270" height="180" rx="28" fill="#FFFFFF"/>
-    <rect x="1238" y="598" width="270" height="180" rx="28" fill="#FFFFFF"/>
+    <rect x="72" y="190" width="240" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
+    <rect x="368" y="190" width="260" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
+    <rect x="688" y="150" width="320" height="200" rx="22" fill="#1E293B" stroke="#334155"/>
+    <rect x="1068" y="190" width="260" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
+
+    <rect x="72" y="406" width="260" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
+    <rect x="392" y="406" width="236" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
+    <rect x="1068" y="406" width="260" height="120" rx="18" fill="#1E293B" stroke="#334155"/>
   </g>
 
-  <rect x="730" y="330" width="430" height="484" rx="34" fill="#182543"/>
+  <text x="108" y="238" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Users</text>
+  <text x="108" y="274" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Public access to frontend</text>
+  <text x="108" y="300" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">and API domains</text>
 
-  <rect x="128" y="404" width="74" height="74" rx="22" fill="url(#blue)"/>
-  <rect x="440" y="404" width="74" height="74" rx="22" fill="url(#blue)"/>
-  <rect x="1274" y="404" width="74" height="74" rx="22" fill="url(#blue)"/>
-  <rect x="128" y="634" width="74" height="74" rx="22" fill="url(#orange)"/>
-  <rect x="440" y="634" width="74" height="74" rx="22" fill="url(#orange)"/>
-  <rect x="1274" y="634" width="74" height="74" rx="22" fill="url(#orange)"/>
+  <text x="404" y="238" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Route53 + CloudFront</text>
+  <text x="404" y="274" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">DNS, TLS, CDN edge,</text>
+  <text x="404" y="300" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">SPA fallback to index.html</text>
 
-  <text x="226" y="446" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Users</text>
-  <text x="226" y="495" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Public access to product</text>
-  <text x="226" y="525" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">frontend and API domains</text>
+  <text x="732" y="212" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">EC2 application host</text>
+  <text x="732" y="252" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">API domain resolves here</text>
+  <rect x="732" y="282" width="232" height="46" rx="12" fill="#334A80"/>
+  <text x="785" y="312" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Caddy reverse proxy</text>
+  <rect x="732" y="342" width="250" height="46" rx="12" fill="#4F6DFF"/>
+  <text x="787" y="372" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Backend container</text>
+  <rect x="732" y="402" width="270" height="46" rx="12" fill="#FF9E3D"/>
+  <text x="775" y="432" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">PostgreSQL 16 private</text>
 
-  <text x="538" y="446" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Route53 + CloudFront</text>
-  <text x="538" y="495" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">DNS, TLS, CDN edge,</text>
-  <text x="538" y="525" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">and SPA fallback behavior</text>
+  <text x="1104" y="238" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Lambda + private S3</text>
+  <text x="1104" y="274" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Optional upload intake</text>
+  <text x="1104" y="300" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">for format source files</text>
 
-  <text x="1372" y="446" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Lambda + Private S3</text>
-  <text x="1372" y="495" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Optional upload intake for</text>
-  <text x="1372" y="525" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">custom format source files</text>
+  <text x="108" y="454" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">GitHub Actions</text>
+  <text x="108" y="490" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Build, release gate, deploy,</text>
+  <text x="108" y="516" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">controlled migrations</text>
 
-  <text x="226" y="676" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">GitHub Actions</text>
-  <text x="226" y="725" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Quality gates, build, deploy,</text>
-  <text x="226" y="755" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">invalidation, SSH hooks</text>
+  <text x="428" y="454" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">S3 frontend bucket</text>
+  <text x="428" y="490" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Versioned frontend assets</text>
+  <text x="428" y="516" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">for CloudFront delivery</text>
 
-  <text x="538" y="676" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">S3 Frontend Bucket</text>
-  <text x="538" y="725" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Versioned frontend artifacts</text>
-  <text x="538" y="755" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">with cache-aware upload rules</text>
+  <text x="1104" y="454" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">S3 backup bucket</text>
+  <text x="1104" y="490" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Logical PostgreSQL dumps</text>
+  <text x="1104" y="516" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">and restore target</text>
 
-  <text x="1372" y="676" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Backup Bucket</text>
-  <text x="1372" y="725" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Logical dumps, retention,</text>
-  <text x="1372" y="755" fill="#627396" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">and restore validation target</text>
+  <path d="M312 250H368" stroke="url(#lineBlue)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M628 250H688" stroke="url(#lineBlue)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M1008 250H1068" stroke="url(#lineBlue)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M202 310V406" stroke="url(#lineBlue)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M510 310V406" stroke="url(#lineBlue)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M332 466H392" stroke="url(#lineOrange)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M628 466H688" stroke="url(#lineOrange)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M1008 466H1068" stroke="url(#lineOrange)" stroke-width="6" stroke-linecap="round"/>
 
-  <text x="790" y="408" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="800">EC2 Application Host</text>
-  <text x="790" y="452" fill="#BDCBF4" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="500">Public API hostname resolves here</text>
+  <text x="72" y="612" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">Traffic flow</text>
+  <text x="72" y="656" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Users -> Route53 -> CloudFront -> S3 frontend</text>
+  <text x="72" y="688" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">API domain -> Route53 -> EC2 -> Caddy -> backend container -> PostgreSQL 16</text>
+  <text x="72" y="720" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">GitHub Actions -> S3 / CloudFront deploy + SSH backend deploy + controlled migrations</text>
+  <text x="72" y="752" fill="#A9B6DE" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="500">Backups -> separate S3 backup bucket</text>
 
-  <rect x="790" y="520" width="270" height="86" rx="26" fill="#304576"/>
-  <rect x="790" y="645" width="310" height="92" rx="28" fill="url(#blue)"/>
-  <rect x="790" y="748" width="335" height="88" rx="28" fill="url(#orange)"/>
-
-  <text x="852" y="575" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Caddy Reverse Proxy</text>
-  <text x="852" y="704" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Backend Container</text>
-  <text x="840" y="806" fill="#1B2740" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800">PostgreSQL 16 (private)</text>
-
-  <path d="M362 441H442" stroke="#4C6FFF" stroke-width="8" stroke-linecap="round"/>
-  <path d="M674 441H730" stroke="#4C6FFF" stroke-width="8" stroke-linecap="round"/>
-  <path d="M1160 441H1238" stroke="#4C6FFF" stroke-width="8" stroke-linecap="round"/>
-  <path d="M227 548V598" stroke="#8799FF" stroke-width="6" stroke-linecap="round"/>
-  <path d="M539 548V598" stroke="#8799FF" stroke-width="6" stroke-linecap="round"/>
-  <path d="M674 680H730" stroke="#FF9E3D" stroke-width="8" stroke-linecap="round"/>
-  <path d="M1160 680H1238" stroke="#FF9E3D" stroke-width="8" stroke-linecap="round"/>
-
-  <text x="92" y="900" fill="#617291" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="500">Sanitized infrastructure skeleton. Real identifiers, secrets, and operational details intentionally omitted.</text>
+  <text x="72" y="838" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="500">Sanitized diagram. Real IDs, secrets, private names, and operational identifiers are intentionally omitted.</text>
 </svg>

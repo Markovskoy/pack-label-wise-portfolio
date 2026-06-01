@@ -6,6 +6,13 @@ The production shape behind this portfolio is intentionally pragmatic. The front
 
 The split between frontend delivery and API runtime is doing most of the useful work here. Static assets are pushed to S3 and cached globally by CloudFront, while dynamic traffic is routed to a VM that can be updated on its own cadence. This keeps frontend deploys lightweight and makes it possible to talk about cache invalidation, rollback, and edge behavior separately from backend release concerns.
 
+## Traffic Model
+
+- Users -> Route53 -> CloudFront -> S3 frontend
+- API domain -> Route53 -> EC2 -> Caddy -> backend container -> PostgreSQL 16
+- GitHub Actions -> S3/CloudFront deploy + SSH backend deploy + controlled migrations
+- Backups -> separate S3 backup bucket
+
 ## Request Paths
 
 For the browser experience, the user hits the public domain, Route53 resolves it to CloudFront, and CloudFront serves the built frontend from S3. Error handling maps `403` and `404` back to `index.html`, which keeps SPA routing clean without pushing that concern into the application runtime.
@@ -13,6 +20,12 @@ For the browser experience, the user hits the public domain, Route53 resolves it
 For API traffic, the browser calls a separate public hostname. Route53 resolves that hostname to the EC2 instance, Caddy terminates TLS and forwards the request to the backend container, and the backend talks to PostgreSQL over the local private network created by Docker Compose. The database is therefore not exposed as a public service at all.
 
 There is also an optional helper flow for user-supplied format assets. In the documented design, the frontend can request a signed upload URL from a small Lambda endpoint, upload directly into a private S3 bucket, and trigger an SES-backed notification flow. That keeps binary intake away from the main runtime while still fitting the overall AWS footprint.
+
+## Related Artifacts
+
+- Terraform: [`infra/terraform/`](https://github.com/Markovskoy/pack-label-wise-portfolio/tree/main/infra/terraform)
+- Runtime: [`infra/docker-compose.example.yml`](https://github.com/Markovskoy/pack-label-wise-portfolio/blob/main/infra/docker-compose.example.yml)
+- Reverse proxy: [`infra/caddy.example`](https://github.com/Markovskoy/pack-label-wise-portfolio/blob/main/infra/caddy.example)
 
 ## Why This Shape Was Chosen
 
