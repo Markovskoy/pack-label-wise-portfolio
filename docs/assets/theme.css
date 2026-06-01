@@ -28,6 +28,11 @@
   display: none !important;
 }
 
+/* Hide right-side Table of Contents */
+.md-sidebar--secondary {
+  display: none !important;
+}
+
 .md-main__inner {
   margin-top: 1rem;
 }
@@ -69,43 +74,31 @@
   text-decoration: underline;
 }
 
-.repo-strip {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 2.25rem;
-}
-
-.repo-strip__link {
+/* GitHub icon fixed inside the header bar */
+.github-header-icon {
+  position: fixed;
+  top: 0;
+  right: 1.2rem;
+  z-index: 10;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #dfe8ff;
-  font-size: 0.82rem;
-  font-weight: 600;
+  height: 2.4rem;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.2s;
+  text-decoration: none !important;
 }
 
-.repo-strip__link svg {
-  width: 1rem;
-  height: 1rem;
+.github-header-icon:hover {
+  color: #fff;
+}
+
+.github-header-icon svg {
+  width: 1.3rem;
+  height: 1.3rem;
   fill: currentColor;
-}
-
-.more-link {
-  display: inline-block;
-  margin-top: 0.15rem;
-  color: #dfe8ff !important;
-  font-weight: 600;
 }
 
 .md-nav__link--active,
 .md-tabs__link--active {
   font-weight: 700;
-}
-
-@media screen and (max-width: 600px) {
-  .repo-strip {
-    justify-content: center;
-  }
 }
