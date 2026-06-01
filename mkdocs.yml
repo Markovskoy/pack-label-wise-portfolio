@@ -1,7 +1,6 @@
 site_name: LabelMaster / Potaglab
 site_description: Sanitized AWS, CI/CD, PostgreSQL, and SRE portfolio case study
 site_url: https://markovskoy.github.io/pack-label-wise-portfolio/
-repo_url: https://github.com/Markovskoy/pack-label-wise-portfolio
 
 theme:
   name: material
@@ -11,11 +10,6 @@ theme:
     - scheme: slate
       primary: indigo
       accent: orange
-  features:
-    - navigation.tabs
-    - navigation.sections
-    - navigation.top
-    - content.code.copy
 
 extra:
   generator: false
@@ -28,13 +22,6 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Architecture: architecture.md
-  - CI/CD: cicd.md
-  - AWS Infrastructure: aws-infrastructure.md
-  - Database: database.md
-  - Security: security.md
-  - SRE / Operability: sre-operability.md
-  - Roadmap: roadmap.md
 
 extra_css:
   - assets/theme.css

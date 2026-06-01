@@ -1,13 +1,19 @@
 # LabelMaster / Potaglab
 
-<section class="hero-panel">
-  <div class="hero-copy">
-    <div class="hero-kicker">Sanitized AWS / DevOps / SRE portfolio case study</div>
-    <h1>Production delivery story for a logistics labeling platform</h1>
+<section class="hero-panel hero-panel-single">
+  <div class="hero-copy hero-copy-wide">
+    <div class="hero-kicker">Sanitized DevOps / AWS portfolio case</div>
+    <h1>How I deployed and operated LabelMaster in AWS</h1>
     <p>
-      This repository documents how I packaged, delivered, and operated a private business application on AWS
-      without publishing proprietary code. The focus is on release engineering, infrastructure shape, database
-      operations, security boundaries, and day-two operability.
+      LabelMaster is a private logistics labeling web application for importing products from Excel,
+      managing shipments, and exporting labels to PDF or PPTX. This repository is a public-safe portfolio
+      version focused on the DevOps part: AWS infrastructure, Terraform layout, GitHub Actions delivery,
+      PostgreSQL operations, backups, and basic production hardening.
+    </p>
+    <p>
+      The real application code, secrets, and production identifiers are intentionally not published.
+      What is left here is the part that is useful in an interview or portfolio review: how the platform
+      is structured, how it is released, and what was done to keep it operable.
     </p>
     <div class="hero-meta">
       <span>AWS</span>
@@ -17,77 +23,76 @@
       <span>PostgreSQL 16</span>
       <span>GitHub Actions</span>
     </div>
-    <div class="hero-actions">
-      <a class="hero-button hero-button-primary" href="architecture/">Explore Architecture</a>
-      <a class="hero-button hero-button-secondary" href="cicd/">Review CI/CD</a>
-      <a class="hero-button hero-button-secondary" href="https://potaglab.com">Open potaglab.com</a>
-    </div>
-  </div>
-  <div class="hero-aside">
-    <div class="hero-stat">
-      <strong>Public repo</strong>
-      <span>Sanitized and portfolio-safe</span>
-    </div>
-    <div class="hero-stat">
-      <strong>Private app code</strong>
-      <span>Deliberately excluded</span>
-    </div>
-    <div class="hero-stat">
-      <strong>Primary focus</strong>
-      <span>Infrastructure, delivery, operations</span>
-    </div>
   </div>
 </section>
 
-![Architecture diagram](assets/architecture-diagram.svg)
+## Architecture
 
-## What This Repository Shows
+```text
+Users
+  |
+  +--> potaglab.com / www.potaglab.com
+  |      Route53 -> CloudFront -> S3 frontend bucket
+  |
+  +--> api.potaglab.com
+         Route53 -> EC2 Elastic IP -> Caddy -> backend container -> PostgreSQL 16
 
-The application itself solves a practical logistics workflow: importing structured data, managing shipments, generating pallet and box layouts, and exporting labels. For portfolio purposes, I kept the emphasis on the infrastructure and delivery layer around that product. The interesting part here is not a toy demo, but how the system is exposed safely on the Internet, how releases are gated, how PostgreSQL is handled, and how the runtime can be operated without pretending the platform is larger than it is.
+GitHub Actions
+  |
+  +--> frontend build -> S3 sync -> CloudFront invalidation
+  +--> backend deploy over SSH -> docker compose update on EC2
+  +--> controlled DB migration step
 
-This is also why the repository is intentionally sanitized. The real codebase, real AWS identifiers, secrets, customer data, and business-specific naming stay private. What remains public is the part that is still useful in an engineering conversation: architecture, deployment patterns, operational trade-offs, and the artifacts that support them.
+Backups
+  |
+  +--> PostgreSQL logical dumps -> separate S3 backup bucket
+```
 
-## Engineering Highlights
+The production shape is intentionally simple. The frontend is served from `S3 + CloudFront`, the API runs on a single `EC2` host behind `Caddy`, and `PostgreSQL 16` stays private on the same host in Docker Compose. That kept infrastructure small, reduced moving parts, and still gave clear boundaries between edge delivery, application runtime, and data.
 
-<div class="card-grid">
-  <article class="feature-card">
-    <h3>Static delivery at the edge</h3>
-    <p>The frontend is built once, uploaded to S3 with cache-aware rules, and served through CloudFront with SPA fallback behavior.</p>
-  </article>
-  <article class="feature-card">
-    <h3>Small runtime, clear boundaries</h3>
-    <p>The API runs on EC2 behind Caddy, while PostgreSQL stays private on the same host in Docker Compose to keep the topology simple and understandable.</p>
-  </article>
-  <article class="feature-card">
-    <h3>Controlled release flow</h3>
-    <p>GitHub Actions separates linting, build, migration, and deploy stages instead of hiding everything behind a single push-to-prod pipeline.</p>
-  </article>
-  <article class="feature-card">
-    <h3>Migration discipline</h3>
-    <p>Schema changes are treated as an explicit stage so deployment risk stays visible and rollback decisions are made deliberately.</p>
-  </article>
-  <article class="feature-card">
-    <h3>Backups and restore thinking</h3>
-    <p>The database section documents logical dumps, object storage retention, and restore validation instead of stopping at “we have backups”.</p>
-  </article>
-  <article class="feature-card">
-    <h3>Public-safe documentation</h3>
-    <p>The repo is structured to look like a real platform portfolio without leaking secrets, real identifiers, or private source code.</p>
-  </article>
-</div>
+<details class="portfolio-block" open>
+  <summary>AWS</summary>
 
-## Documentation Map
+The public website is served from S3 through CloudFront, with Route53 handling the public domains. API traffic goes to `api.potaglab.com`, which resolves to an EC2 host with an Elastic IP. On that host, Caddy terminates TLS and proxies requests to the backend container. PostgreSQL runs privately in the same Docker Compose stack and is not exposed to the Internet.
 
-<div class="quick-nav-grid">
-  <a class="quick-nav-card" href="architecture/"><strong>Architecture</strong><span>System shape, traffic paths, design rationale</span></a>
-  <a class="quick-nav-card" href="cicd/"><strong>CI/CD</strong><span>Release gates, quality checks, deploy stages</span></a>
-  <a class="quick-nav-card" href="aws-infrastructure/"><strong>AWS Infrastructure</strong><span>S3, CloudFront, Route53, EC2, IAM, backups</span></a>
-  <a class="quick-nav-card" href="database/"><strong>Database</strong><span>PostgreSQL 16, migrations, backups, restore path</span></a>
-  <a class="quick-nav-card" href="security/"><strong>Security</strong><span>Sanitization, auth boundaries, hardening posture</span></a>
-  <a class="quick-nav-card" href="sre-operability/"><strong>SRE / Operability</strong><span>Health checks, rollback, logging, incident handling</span></a>
-  <a class="quick-nav-card" href="roadmap/"><strong>Roadmap</strong><span>Next maturity steps for platform and portfolio</span></a>
-</div>
+This shape is not about pretending the system is huge. It is about showing a production setup that is reasonable for the project size, easy to operate, and cheap enough to keep under control.
+</details>
 
-## Why It Matters
+<details class="portfolio-block">
+  <summary>Terraform</summary>
 
-For a portfolio, I wanted something more credible than a checklist of tools. This case study shows a deployment model that is small enough to reason about, but real enough to discuss production concerns: blast radius, TLS termination, database exposure, release gates, manual intervention points, backup boundaries, and what I would improve next if the platform kept growing.
+Terraform in this portfolio is presented the same way I would use it in practice: mostly by wiring together proven upstream modules and adding project-specific values around them. The repo includes a sanitized `infra/terraform/` layout for S3, CloudFront, Route53, EC2, security groups, IAM policy for deploys, and backup storage.
+
+It is intentionally not framed as “I wrote every Terraform resource from scratch”. The idea is closer to real work: take stable modules from public repositories, plug in the project values, keep the structure readable, and use Terraform as the source of truth for the AWS layer.
+</details>
+
+<details class="portfolio-block">
+  <summary>CI/CD</summary>
+
+The deployment flow is organized around GitHub Actions. Feature branches do not deploy. Release branches are used to prepare a cut, and production rollout happens when a release branch is merged into `main` or when a manual dispatch is used intentionally.
+
+The pipeline is split into the parts that matter operationally: frontend lint/build, frontend upload to S3, CloudFront invalidation, backend deployment to EC2 over SSH, and a separate migration step for PostgreSQL. There is also a quality workflow with linting and a SonarQube stage to show the quality gate shape in GitHub, even though the public repo does not contain the real secret-backed scanner configuration.
+
+Relevant files:
+
+- `.github/workflows/release.yml`
+- `.github/workflows/quality.yml`
+- `.github/workflows/pages.yml`
+</details>
+
+<details class="portfolio-block">
+  <summary>Database and backups</summary>
+
+The current production database is PostgreSQL 16 in Docker on the application host. That choice keeps the setup simple while the system is still small. Migrations are treated as a separate deployment stage, not something hidden inside an app restart. Backups are planned as logical dumps stored in a separate S3 bucket, with restore validation as the next operational improvement.
+</details>
+
+<details class="portfolio-block">
+  <summary>Security</summary>
+
+The public repository is sanitized on purpose: no real secrets, no customer data, no real account identifiers, no private URLs beyond the public site, and no proprietary backend source. On the runtime side, PostgreSQL is not public, TLS is terminated at the edge and at the API entrypoint, deployment access is kept separate, and backup storage is split from frontend artifact storage.
+</details>
+
+## Project links
+
+- Public site: [https://potaglab.com](https://potaglab.com)
+- Portfolio repo: [https://github.com/Markovskoy/pack-label-wise-portfolio](https://github.com/Markovskoy/pack-label-wise-portfolio)
