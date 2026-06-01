@@ -1,0 +1,86 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="140" y1="80" x2="1460" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1F2A44"/>
+      <stop offset="0.58" stop-color="#243765"/>
+      <stop offset="1" stop-color="#274AA0"/>
+    </linearGradient>
+    <linearGradient id="primary" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#355CFF"/>
+      <stop offset="1" stop-color="#6D4BFF"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFB03A"/>
+      <stop offset="1" stop-color="#FF871A"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1600" height="900" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="30" flood-color="#09101F" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="#F7F9FC"/>
+  <rect x="48" y="42" width="1504" height="260" rx="30" fill="url(#bg)"/>
+  <circle cx="226" cy="152" r="72" fill="#355CFF" fill-opacity="0.22"/>
+  <circle cx="1322" cy="192" r="104" fill="#FF9F1A" fill-opacity="0.13"/>
+  <text x="100" y="120" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">PackLabel / LabelMaster</text>
+  <text x="100" y="176" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800">AWS Delivery Architecture</text>
+  <text x="100" y="224" fill="#D8E1FF" font-family="Arial, Helvetica, sans-serif" font-size="24">Sanitized portfolio diagram focused on CDN, EC2 runtime, PostgreSQL operations, and CI/CD boundaries</text>
+
+  <g filter="url(#shadow)">
+    <rect x="92" y="360" width="262" height="180" rx="28" fill="white"/>
+    <rect x="92" y="578" width="262" height="180" rx="28" fill="white"/>
+    <rect x="424" y="360" width="262" height="180" rx="28" fill="white"/>
+    <rect x="424" y="578" width="262" height="180" rx="28" fill="white"/>
+    <rect x="756" y="360" width="332" height="398" rx="28" fill="#1F2A44"/>
+    <rect x="1158" y="360" width="350" height="180" rx="28" fill="white"/>
+    <rect x="1158" y="578" width="350" height="180" rx="28" fill="white"/>
+  </g>
+
+  <rect x="122" y="390" width="70" height="70" rx="20" fill="url(#primary)"/>
+  <text x="214" y="422" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">Users</text>
+  <text x="122" y="488" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">Public access to</text>
+  <text x="122" y="518" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">frontend and API domains</text>
+
+  <rect x="122" y="608" width="70" height="70" rx="20" fill="url(#accent)"/>
+  <text x="214" y="640" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">GitHub Actions</text>
+  <text x="122" y="706" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">Release gate, build,</text>
+  <text x="122" y="736" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">deploy, invalidation, SSH hooks</text>
+
+  <rect x="454" y="390" width="70" height="70" rx="20" fill="url(#primary)"/>
+  <text x="546" y="422" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">Route53 + CloudFront</text>
+  <text x="454" y="488" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">CDN edge, TLS,</text>
+  <text x="454" y="518" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">and SPA fallback</text>
+
+  <rect x="454" y="608" width="70" height="70" rx="20" fill="url(#accent)"/>
+  <text x="546" y="640" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">S3 Frontend Bucket</text>
+  <text x="454" y="706" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">Versioned frontend artifacts</text>
+  <text x="454" y="736" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">with cache-aware uploads</text>
+
+  <text x="790" y="416" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800">EC2 Application Host</text>
+  <text x="790" y="454" fill="#BFD0FF" font-family="Arial, Helvetica, sans-serif" font-size="20">Public API domain resolves here</text>
+  <rect x="790" y="492" width="264" height="80" rx="22" fill="#2D3D63"/>
+  <text x="820" y="538" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Caddy Reverse Proxy</text>
+  <rect x="790" y="598" width="264" height="80" rx="22" fill="url(#primary)"/>
+  <text x="820" y="644" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Backend Container</text>
+  <rect x="790" y="704" width="264" height="80" rx="22" fill="url(#accent)"/>
+  <text x="820" y="750" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">PostgreSQL 16 (private)</text>
+
+  <rect x="1188" y="390" width="70" height="70" rx="20" fill="url(#primary)"/>
+  <text x="1280" y="422" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">Lambda + Private S3</text>
+  <text x="1188" y="488" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">Optional PPT/PPTX intake</text>
+  <text x="1188" y="518" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">with SES notification flow</text>
+
+  <rect x="1188" y="608" width="70" height="70" rx="20" fill="url(#accent)"/>
+  <text x="1280" y="640" fill="#1F2A44" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="800">Backup Bucket</text>
+  <text x="1188" y="706" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">Logical dumps, retention,</text>
+  <text x="1188" y="736" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="21">future restore validation</text>
+
+  <path d="M354 450H424" stroke="#355CFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M686 450H756" stroke="#355CFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M686 668H756" stroke="#FF9F1A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M1088 450H1158" stroke="#355CFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M1088 668H1158" stroke="#FF9F1A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M224 578V540" stroke="#8DA1D1" stroke-width="6" stroke-linecap="round"/>
+  <path d="M556 578V540" stroke="#8DA1D1" stroke-width="6" stroke-linecap="round"/>
+
+  <text x="92" y="830" fill="#5D6B88" font-family="Arial, Helvetica, sans-serif" font-size="20">Sanitized infrastructure skeleton. Real identifiers and operational details intentionally omitted.</text>
+</svg>

@@ -1,0 +1,202 @@
+name: Release CD Example
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy_frontend:
+        description: Deploy frontend assets
+        type: boolean
+        default: true
+      deploy_backend:
+        description: Run backend deploy hook
+        type: boolean
+        default: false
+      run_migrations:
+        description: Run migration stage
+        type: boolean
+        default: false
+      version:
+        description: Optional semver override
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  FRONTEND_BUCKET: <s3-frontend-bucket>
+  CLOUDFRONT_DISTRIBUTION_ID: <cloudfront-distribution-id>
+
+jobs:
+  release-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.gate.outputs.should_release }}
+      release_version: ${{ steps.version.outputs.release_version }}
+      frontend_changed: ${{ steps.changes.outputs.frontend_changed }}
+      backend_changed: ${{ steps.changes.outputs.backend_changed }}
+      migrations_changed: ${{ steps.changes.outputs.migrations_changed }}
+    steps:
+      - name: Validate trigger
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "${{ github.event.pull_request.merged }}" = "true" ] && [[ "${{ github.event.pull_request.head.ref }}" == release/* ]]; then
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.should_release == 'true'
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version
+        if: steps.gate.outputs.should_release == 'true'
+        id: version
+        run: |
+          VERSION="${{ inputs.version }}"
+          if [ -z "$VERSION" ] && [ "${{ github.event_name }}" = "pull_request" ]; then
+            VERSION="${{ github.event.pull_request.head.ref }}"
+            VERSION="${VERSION#release/v}"
+            VERSION="${VERSION#release/}"
+          fi
+          if [ -z "$VERSION" ]; then
+            VERSION="0.1.0"
+          fi
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Version must be semver x.y.z, got: $VERSION" >&2
+            exit 1
+          fi
+
+          echo "release_version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Detect changed paths
+        if: steps.gate.outputs.should_release == 'true'
+        id: changes
+        run: |
+          CHANGED="$(git diff --name-only HEAD~1 HEAD || true)"
+          echo "$CHANGED"
+
+          if echo "$CHANGED" | grep -Eq '^(src|public|package(-lock)?\.json|vite\.config\.ts|tailwind\.config\.ts|tsconfig.*\.json)'; then
+            echo "frontend_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "frontend_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if echo "$CHANGED" | grep -Eq '^(backend|server|api|Dockerfile|docker-compose\.ya?ml)'; then
+            echo "backend_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "backend_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if echo "$CHANGED" | grep -Eq '^db/postgres/.*\.(sql|js|ts|mjs)$'; then
+            echo "migrations_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "migrations_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  lint-frontend:
+    runs-on: ubuntu-latest
+    needs: release-gate
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.frontend_changed == 'true' || inputs.deploy_frontend == true)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: [release-gate, lint-frontend]
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.frontend_changed == 'true' || inputs.deploy_frontend == true)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_APP_VERSION: ${{ needs.release-gate.outputs.release_version }}
+          VITE_APP_COMMIT: ${{ github.sha }}
+          VITE_APP_BUILD_TIME: ${{ github.event.repository.updated_at }}
+          VITE_API_URL: https://<api-domain>
+          VITE_LABEL_FORMATS_ENDPOINT: https://<sanitized-lambda-endpoint>
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-${{ needs.release-gate.outputs.release_version }}
+          path: dist
+
+  build-backend:
+    runs-on: ubuntu-latest
+    needs: release-gate
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.backend_changed == 'true' || inputs.deploy_backend == true)
+    steps:
+      - uses: actions/checkout@v4
+      - name: Backend build placeholder
+        run: |
+          echo "Private backend build omitted in public repository."
+          echo "In production, this stage validates or builds the backend before deployment."
+
+  lint-migrations:
+    runs-on: ubuntu-latest
+    needs: release-gate
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.migrations_changed == 'true' || inputs.run_migrations == true)
+    steps:
+      - uses: actions/checkout@v4
+      - name: Migration lint placeholder
+        run: |
+          echo "Validate migration filenames, syntax, and conflict markers."
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: [release-gate, build-frontend]
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.frontend_changed == 'true' || inputs.deploy_frontend == true)
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist-${{ needs.release-gate.outputs.release_version }}
+          path: dist
+      - name: Configure AWS credentials
+        run: echo "Use GitHub Secrets-backed AWS credentials here"
+      - name: Deploy frontend placeholder
+        run: |
+          echo "aws s3 sync dist s3://${FRONTEND_BUCKET} --delete --exclude index.html --cache-control public,max-age=31536000,immutable"
+          echo "aws s3 cp dist/index.html s3://${FRONTEND_BUCKET}/index.html --cache-control no-cache,no-store,must-revalidate --content-type text/html"
+      - name: CloudFront invalidation placeholder
+        run: |
+          echo "aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'"
+
+  migrate-db:
+    runs-on: ubuntu-latest
+    needs: [release-gate, lint-migrations]
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.migrations_changed == 'true' || inputs.run_migrations == true)
+    steps:
+      - name: Migration execution placeholder
+        run: |
+          echo "Run controlled migration hook over SSH or through an approved deployment runner."
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: [release-gate, build-backend]
+    if: needs.release-gate.outputs.should_release == 'true' && (needs.release-gate.outputs.backend_changed == 'true' || inputs.deploy_backend == true)
+    steps:
+      - name: Backend deploy placeholder
+        run: |
+          echo "Connect to EC2 via a dedicated deploy user and run the backend deploy hook."
+          echo "A typical pattern is docker compose up -d --build app on the target host."

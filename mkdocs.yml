@@ -1,0 +1,33 @@
+site_name: PackLabel / LabelMaster Portfolio
+site_description: Sanitized AWS, CI/CD, PostgreSQL, and SRE case study
+site_url: https://<github-username>.github.io/<repo-name>/
+repo_url: https://github.com/<github-username>/<repo-name>
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: orange
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - content.action.edit
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - CI/CD: cicd.md
+  - AWS Infrastructure: aws-infrastructure.md
+  - Database: database.md
+  - Security: security.md
+  - SRE / Operability: sre-operability.md
+  - Screenshots: screenshots.md
+  - Roadmap: roadmap.md
+extra_css:
+  - assets/theme.css
