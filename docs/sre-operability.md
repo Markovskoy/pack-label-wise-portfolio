@@ -1,7 +1,5 @@
 # SRE / Operability
 
-[Back to Home](index.md){ .md-button .nav-button }
-
 This platform is intentionally small, but I still wanted the operational story to look like something that could survive production use. That means thinking beyond initial deployment and documenting how the system is checked, rolled back, observed, and recovered when something goes wrong.
 
 ## Release And Rollback Thinking
@@ -25,5 +23,3 @@ The incident approach is deliberately plain: identify which layer is failing, ch
 ## Next Operational Steps
 
 The natural maturity upgrades are synthetic probes, centralized logs and metrics, automated restore-test evidence, and clearer SLO-style reporting. I left those as visible next steps because the portfolio is stronger when it shows both what is in place now and what I would improve next.
-
-[Back to Home](index.md){ .md-button .nav-button }

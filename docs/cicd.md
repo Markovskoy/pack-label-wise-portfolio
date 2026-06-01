@@ -1,7 +1,5 @@
 # CI/CD
 
-[Back to Home](index.md){ .md-button .nav-button }
-
 The release flow is designed to look and behave like a controlled production pipeline rather than a generic “push to main and hope” setup. In the private deployment, feature branches are for development, release branches are for preparing a cut, and production deployment happens only when a release branch is merged into `main` or when a manual workflow is triggered on purpose.
 
 GitHub Actions was chosen for practical reasons. The application is small enough that it was easier to keep repository hosting and delivery automation in GitHub than to add the operational overhead of a separate GitLab installation. For this project, simplicity was the better trade-off.
@@ -25,5 +23,3 @@ The repository also includes a sanitized quality workflow at [`.github/workflows
 This pipeline design demonstrates a few things I care about when describing DevOps work. First, releases should be explicit. Second, frontend delivery to a CDN has very different operational behavior from SSH-driven backend rollout on a VM. Third, database migrations deserve their own control point because they can change the rollback story more than any application artifact.
 
 For a portfolio, that is much more valuable than a long YAML file with no explanation. The point is not the syntax of GitHub Actions. The point is that the deployment process reflects real production concerns.
-
-[Back to Home](index.md){ .md-button .nav-button }

@@ -1,7 +1,5 @@
 # Database & Backups
 
-[Back to Home](index.md){ .md-button .nav-button }
-
 PostgreSQL 16 is documented here as part of the application runtime on EC2, running privately inside Docker Compose with persistent storage on the host. That is a deliberate trade-off. For a platform of this size, keeping the database close to the application reduces infrastructure overhead and makes deployment and maintenance easier to explain.
 
 The important part is not pretending this is the final form of the system. The important part is that the operational boundaries are still clear. PostgreSQL is not exposed publicly, the application reaches it over the internal runtime network, and schema changes are treated as a separate stage rather than an invisible side effect of an app deploy.
@@ -21,5 +19,3 @@ For that reason, the documented plan includes recurring restore drills into an i
 ## Growth Path
 
 When the platform outgrows a single-host database, the next move is not “add complexity everywhere”. It is to define the reason first: availability requirements, write pressure, backup pain, operational toil, or stronger isolation needs. At that point, RDS becomes the natural next step, and the repo already frames the current setup as a stepping stone rather than a permanent destination.
-
-[Back to Home](index.md){ .md-button .nav-button }

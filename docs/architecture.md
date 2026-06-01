@@ -1,7 +1,5 @@
 # Architecture
 
-[Back to Home](index.md){ .md-button .nav-button }
-
 ![LabelMaster / Potaglab architecture](assets/architecture-diagram.svg)
 
 The production shape behind this portfolio is intentionally pragmatic. The frontend is a static SPA served from S3 through CloudFront, the API runs on a single EC2 host, Caddy handles the public entry point and TLS for the backend, and PostgreSQL 16 stays private inside the same Docker Compose stack. That layout is not meant to imitate a hyperscale system. It is meant to keep the early production footprint understandable, cheap, and operationally predictable.
@@ -52,5 +50,3 @@ The public repository intentionally omits the proprietary backend, but the front
 ## What Is Deliberately Missing
 
 The private product logic, the real schema, real operational naming, customer data, and exact production identifiers are not part of this repository. The goal is to preserve the engineering story, not to publish sensitive implementation detail.
-
-[Back to Home](index.md){ .md-button .nav-button }

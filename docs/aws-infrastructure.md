@@ -1,7 +1,5 @@
 # AWS Infrastructure & IaC
 
-[Back to Home](index.md){ .md-button .nav-button }
-
 This repository documents a compact AWS setup built around the needs of a private production web application. The public pages use placeholders only, but the infrastructure shape is real enough to explain how the platform is delivered and why each component exists.
 
 The frontend lives where it should live for this kind of product: in S3 behind CloudFront. That keeps the delivery path fast, cheap, and simple, while making cache behavior an explicit part of the release process. Route53 points the public domain and `www` alias at the distribution, and CloudFront handles HTTPS plus SPA fallback behavior.
@@ -31,5 +29,3 @@ Automation only needs a narrow set of AWS permissions: object access for the fro
 ## Why This Is A Good Portfolio Baseline
 
 I wanted the AWS story to feel grounded. This is not a giant reference architecture copied from a vendor diagram. It is a believable production baseline for an application that has a real business workflow, moderate infrastructure needs, and room to evolve. The repository shows the current state honestly and leaves a visible path toward stronger isolation, managed database services, and more mature observability later.
-
-[Back to Home](index.md){ .md-button .nav-button }
