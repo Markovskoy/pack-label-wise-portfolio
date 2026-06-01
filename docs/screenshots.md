@@ -1,27 +1,9 @@
 # Screenshots
 
-## Public-Safe Visuals
-
-The original product uses a deep navy, electric blue, and accent orange visual language. For this portfolio repository, visuals are either redacted or reconstructed to avoid exposing internal UI details unnecessarily.
-
-### Landing / product style reference
+The real product UI is private, so the visual material in this repository is intentionally curated. The goal is to give enough design context for the case study without exposing customer information, internal workflows, or private environments.
 
 ![Landing showcase](assets/screenshots/landing-showcase.svg)
 
-## Recommended Screenshot Set For Publication
+When preparing public screenshots for GitHub or LinkedIn, I would keep the set small and focused: one landing view, one operational workflow view, one label or export-related screen, and one architecture-oriented visual that anchors the DevOps/SRE story. Anything more than that tends to add noise unless the data has been carefully redacted.
 
-When you prepare the final public GitHub repository, use 4-6 carefully redacted screenshots:
-
-1. Landing page hero
-2. Product management screen with blurred business data
-3. Shipment workflow or pallet layout screen with dummy data
-4. Export or label generation screen
-5. AWS / CI/CD architecture slide or diagram
-
-## Redaction Rules
-
-- Remove customer names
-- Remove SKUs or order IDs if they are real
-- Remove email addresses, tokens, URLs, and internal notes
-- Crop browser chrome if it reveals internal environments
-- Prefer demo or fabricated data where possible
+The redaction rules are simple: remove real names, order data, emails, internal URLs, tokens, and any browser chrome that points to a private environment. If there is any doubt, fabricated demo data is better than partial masking.

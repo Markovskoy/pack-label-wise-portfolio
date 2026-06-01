@@ -1,6 +1,11 @@
 variable "project_name" {
   type    = string
-  default = "packlabel-portfolio"
+  default = "labelmaster"
+}
+
+variable "environment" {
+  type    = string
+  default = "prod"
 }
 
 variable "aws_region" {
@@ -20,12 +25,12 @@ variable "api_domain" {
 
 variable "frontend_bucket_name" {
   type    = string
-  default = "<s3-frontend-bucket>"
+  default = "<frontend-bucket-name>"
 }
 
 variable "backup_bucket_name" {
   type    = string
-  default = "<backup-bucket>"
+  default = "<backup-bucket-name>"
 }
 
 variable "cloudfront_certificate_arn" {
@@ -55,7 +60,7 @@ variable "subnet_id" {
 
 variable "admin_cidrs" {
   type    = list(string)
-  default = ["<admin-cidr>"]
+  default = ["<office-cidr>"]
 }
 
 variable "ec2_ami_id" {
@@ -74,10 +79,6 @@ variable "ec2_key_name" {
 }
 
 variable "common_tags" {
-  type = map(string)
-  default = {
-    Project     = "packlabel-portfolio"
-    Environment = "production"
-    ManagedBy   = "terraform"
-  }
+  type    = map(string)
+  default = {}
 }

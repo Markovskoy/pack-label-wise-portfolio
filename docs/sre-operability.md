@@ -1,75 +1,25 @@
 # SRE / Operability
 
-## Reliability Goals
+This platform is intentionally small, but I still wanted the operational story to look like something that could survive production use. That means thinking beyond initial deployment and documenting how the system is checked, rolled back, observed, and recovered when something goes wrong.
 
-- Keep frontend delivery independently recoverable from backend runtime issues
-- Make backend releases reversible
-- Keep database recovery procedure explicit and testable
-- Reduce surprise by separating release, migration, and rollback concerns
+## Release And Rollback Thinking
 
-## Rollback Concept
+The frontend is the easiest layer to recover because it is just a versioned static build in S3 behind CloudFront. A previous artifact can be redeployed quickly and the CDN invalidated if needed. The backend is different: rollback means re-deploying the previous known-good container or revision on the EC2 host and checking that Caddy plus the application health endpoints are back in a stable state.
 
-### Frontend
+The database is where the rollback story becomes more careful. Once schema changes are involved, a blind rollback is often the wrong answer. That is why the docs separate migration execution from application deployment and route destructive failures toward a restore decision instead of pretending every release can simply be reversed with one command.
 
-- Re-deploy the previous build artifact to S3
-- Re-run CloudFront invalidation if required
-- Verify `index.html` and asset references after rollback
+## Health Checks And Signals
 
-### Backend
+Operationally, the minimum useful checks are straightforward: can users reach the frontend, does the API respond through the reverse proxy, can the application talk to PostgreSQL, and does a basic smoke path still work after deployment. Logging should cover Caddy, the application containers, and PostgreSQL. Metrics should start with host saturation, container restarts, and obvious database pressure signals before expanding into a fuller observability stack.
 
-- Re-deploy the previous known-good container image or git revision on the EC2 host
-- Confirm Caddy health and API readiness
-- If a migration was destructive, require restore/runbook decision rather than blind rollback
+## Backup Discipline
 
-## Health Checks
+Backups only matter if restore is feasible. The documented plan uses scheduled logical dumps stored in a separate bucket with retention and encryption, plus recurring restore validation into an isolated environment. That is enough to show a serious posture without inventing heavyweight infrastructure that the repository does not actually need.
 
-- CDN reachability check for the frontend domain
-- API readiness endpoint for reverse proxy and app runtime
-- Database connectivity check from the backend container
-- Post-deploy smoke flow: login, product lookup, shipment fetch, export path
+## Incident Handling
 
-## Logging Plan
+The incident approach is deliberately plain: identify which layer is failing, check the most recent deploy or migration activity, inspect proxy/app/database logs, confirm DNS or CDN reachability for user-facing symptoms, and roll back only the affected layer where possible. If data integrity is in question, deploys should stop and the situation should move into a restore or recovery decision path.
 
-- Caddy access/error logs
-- Application stdout/stderr logs from Docker runtime
-- PostgreSQL logs for connection and error visibility
-- Centralization target: CloudWatch, Loki, or another log aggregator
+## Next Operational Steps
 
-## Metrics Plan
-
-- Availability checks for frontend and API
-- Host CPU, memory, disk, and inode usage
-- Container restart count
-- PostgreSQL connection count, storage growth, slow query indicators
-- Deployment frequency and failed deployment count
-
-## Backup And Restore Plan
-
-- Scheduled PostgreSQL logical dumps to a separate backup bucket
-- Encryption at rest
-- Retention policy with lifecycle rules
-- Recurring restore validation into isolated environment
-
-## Incident Response Checklist
-
-1. Confirm scope: frontend only, API only, or database issue.
-2. Check the latest deployment and migration history.
-3. Review reverse proxy, app, and database logs.
-4. Verify DNS/CDN reachability if the symptom is user-facing.
-5. Roll back the affected layer if a recent release is responsible.
-6. If data integrity is at risk, freeze deploys and move to restore decision path.
-7. Document timeline, cause, mitigation, and follow-up actions.
-
-## Cost Control
-
-- Use AWS Budgets with alert thresholds
-- Tag runtime, storage, and backup resources clearly
-- Watch CloudFront transfer, S3 storage, EC2 sizing, and backup growth
-- Review whether single-host Postgres remains cheaper than RDS only after factoring in operational overhead
-
-## Next Maturity Steps
-
-- Synthetic probes for public endpoints
-- Automated restore-test job
-- Centralized metrics and alerting stack
-- RDS migration ADR when scale justifies it
+The natural maturity upgrades are synthetic probes, centralized logs and metrics, automated restore-test evidence, and clearer SLO-style reporting. I left those as visible next steps because the portfolio is stronger when it shows both what is in place now and what I would improve next.

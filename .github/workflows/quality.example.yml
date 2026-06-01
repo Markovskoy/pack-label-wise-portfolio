@@ -1,0 +1,45 @@
+name: Quality Checks Example
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: ESLint
+        run: npm run lint
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    needs: frontend-lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build placeholder
+        run: npm run build
+
+  sonarqube:
+    runs-on: ubuntu-latest
+    needs: frontend-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: SonarQube placeholder
+        run: |
+          echo "Example only: run sonar-scanner here with repo secrets and real project key."
+          echo "This public portfolio keeps the stage as a documented quality gate."

@@ -1,0 +1,22 @@
+project_name              = "labelmaster"
+environment               = "prod"
+aws_region                = "ap-northeast-2"
+app_domain                = "potaglab.com"
+api_domain                = "api.potaglab.com"
+frontend_bucket_name      = "labelmaster-prod-frontend"
+backup_bucket_name        = "labelmaster-prod-backups"
+cloudfront_certificate_arn = "arn:aws:acm:us-east-1:<aws-account-id>:certificate/<certificate-id>"
+route53_zone_id           = "<route53-zone-id>"
+api_public_ip             = "<elastic-ip>"
+vpc_id                    = "<vpc-id>"
+subnet_id                 = "<subnet-id>"
+admin_cidrs               = ["<admin-cidr>"]
+ec2_ami_id                = "<ami-id>"
+ec2_instance_type         = "t3.large"
+ec2_key_name              = "<ec2-key-name>"
+
+common_tags = {
+  Owner       = "portfolio"
+  CostCenter  = "public-case-study"
+  Repository  = "pack-label-wise-portfolio"
+}

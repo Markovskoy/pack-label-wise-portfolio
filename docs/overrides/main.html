@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta property="og:title" content="LabelMaster / Potaglab" />
+  <meta property="og:description" content="Sanitized AWS, CI/CD, PostgreSQL, and SRE portfolio case study." />
+{% endblock %}
+
+{% block htmltitle %}
+  <title>{% if page and page.title %}{{ page.title }} | {% endif %}LabelMaster / Potaglab</title>
+{% endblock %}

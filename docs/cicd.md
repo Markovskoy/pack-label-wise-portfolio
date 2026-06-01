@@ -1,39 +1,23 @@
 # CI/CD
 
-## Release Rules
+The release flow is designed to look and behave like a controlled production pipeline rather than a generic “push to main and hope” setup. In the private deployment, feature branches are for development, release branches are for preparing a cut, and production deployment happens only when a release branch is merged into `main` or when a manual workflow is triggered on purpose.
 
-- Pushes to `feature/*` do not deploy to production.
-- Pushes to `release/*` do not deploy by themselves.
-- Merge of `release/vX.Y.Z` into `main` triggers production CD.
-- `workflow_dispatch` allows controlled manual execution with stage toggles.
+That distinction matters because the platform has three different deployment concerns: frontend assets, backend runtime changes, and database migrations. Treating them as separate stages makes the blast radius easier to understand. It also makes it obvious where a human may want to stop, verify, or intervene.
 
-## Release Stages
+## Release Logic
 
-1. Release gate validates that the trigger is allowed.
-2. Version resolution validates semver and exposes a release version.
-3. Path detection determines whether frontend, backend, or migrations changed.
-4. Frontend lint/build stages run when required.
-5. Backend build is represented as a sanitized placeholder because the private backend source is not published here.
-6. Migration lint and migration execution are separated from app deploy.
-7. Frontend deploy uploads static assets to S3 and invalidates CloudFront.
-8. Backend deploy uses a VM-side hook over SSH.
+The public-safe workflow under [`.github/workflows/release.example.yml`](https://github.com/Markovskoy/pack-label-wise-portfolio/blob/main/.github/workflows/release.example.yml) shows the main idea. A release gate validates whether the workflow is allowed to continue. Version resolution turns the branch or manual input into a usable release number. Change detection then decides whether the frontend, backend, or migration stages are relevant for that run.
 
-## Public-Safe Workflow Design
+Frontend work is the most concrete part of the public pipeline. The assets are linted, built, uploaded as artifacts, and then deployed to S3 with different cache behavior for immutable files versus `index.html`. After that, CloudFront invalidation closes the loop.
 
-- Version metadata is embedded into frontend artifacts.
-- Frontend deploy differentiates immutable assets from `index.html` caching.
-- Release gate reduces accidental deployment from non-release branches.
-- Manual toggles support partial rollout and controlled intervention.
-- Migration execution is explicit, not hidden inside generic app deploys.
+The backend and migration jobs are represented as placeholders because the real runtime code is private, but the separation is still intentional. I wanted the repo to show that schema changes are not silently bundled into a general deploy script and that the VM-side deployment path is treated as a distinct operational step.
 
-## Why This Matters For Portfolio Review
+## Quality Pipeline
 
-- Shows controlled production release thinking instead of naive `push-to-deploy`
-- Demonstrates cache-aware frontend deployment on AWS
-- Shows separation of lint, build, migrate, and deploy responsibilities
-- Documents a realistic bridge between GitHub Actions and VM-hosted Docker Compose runtime
+The repository also includes a sanitized quality workflow at [`.github/workflows/quality.example.yml`](https://github.com/Markovskoy/pack-label-wise-portfolio/blob/main/.github/workflows/quality.example.yml). It is deliberately portfolio-oriented: ESLint, a placeholder build check, and a SonarQube stage that documents the shape of a quality gate without pretending the public repo has the real secret-backed environment behind it. That matches the user-facing goal here: show the engineering intent clearly, even where the public version cannot actually execute the private parts.
 
-## Files
+## Why I Structured It This Way
 
-- Sanitized pipeline example: [`.github/workflows/release.example.yml`](../.github/workflows/release.example.yml)
-- AWS/CD background: [aws-infrastructure.md](aws-infrastructure.md)
+This pipeline design demonstrates a few things I care about when describing DevOps work. First, releases should be explicit. Second, frontend delivery to a CDN has very different operational behavior from SSH-driven backend rollout on a VM. Third, database migrations deserve their own control point because they can change the rollback story more than any application artifact.
+
+For a portfolio, that is much more valuable than a long YAML file with no explanation. The point is not the syntax of GitHub Actions. The point is that the deployment process reflects real production concerns.

@@ -1,63 +1,29 @@
 # Architecture
 
-![PackLabel architecture](assets/architecture-diagram.png)
+![LabelMaster architecture](assets/architecture-diagram.svg)
 
-## System Shape
+The production shape behind this portfolio is intentionally pragmatic. The frontend is a static SPA served from S3 through CloudFront, the API runs on a single EC2 host, Caddy handles the public entry point and TLS for the backend, and PostgreSQL 16 stays private inside the same Docker Compose stack. That layout is not meant to imitate a hyperscale system. It is meant to keep the early production footprint understandable, cheap, and operationally predictable.
 
-The documented production shape is a pragmatic single-region AWS deployment with clear public/private boundaries:
+The split between frontend delivery and API runtime is doing most of the useful work here. Static assets are pushed to S3 and cached globally by CloudFront, while dynamic traffic is routed to a VM that can be updated on its own cadence. This keeps frontend deploys lightweight and makes it possible to talk about cache invalidation, rollback, and edge behavior separately from backend release concerns.
 
-- Static SPA frontend delivered from S3 behind CloudFront
-- API routed to a single EC2 application host
-- Caddy used as the public reverse proxy and TLS edge for the API
-- Backend runtime isolated in Docker Compose
-- PostgreSQL 16 running privately on the same host with persistent storage
-- Optional Lambda-assisted intake flow for custom label format submissions
+## Request Paths
 
-## Request Flows
+For the browser experience, the user hits the public domain, Route53 resolves it to CloudFront, and CloudFront serves the built frontend from S3. Error handling maps `403` and `404` back to `index.html`, which keeps SPA routing clean without pushing that concern into the application runtime.
 
-### Frontend delivery
+For API traffic, the browser calls a separate public hostname. Route53 resolves that hostname to the EC2 instance, Caddy terminates TLS and forwards the request to the backend container, and the backend talks to PostgreSQL over the local private network created by Docker Compose. The database is therefore not exposed as a public service at all.
 
-1. User opens `<app-domain>`.
-2. Route53 resolves the apex or `www` record to CloudFront.
-3. CloudFront serves built frontend assets from the S3 origin.
-4. SPA fallback maps `403/404` to `/index.html`.
+There is also an optional helper flow for user-supplied format assets. In the documented design, the frontend can request a signed upload URL from a small Lambda endpoint, upload directly into a private S3 bucket, and trigger an SES-backed notification flow. That keeps binary intake away from the main runtime while still fitting the overall AWS footprint.
 
-### API request path
+## Why This Shape Was Chosen
 
-1. Browser calls `https://<api-domain>`.
-2. Route53 resolves the API record to the EC2 host.
-3. Caddy terminates TLS and proxies to the backend container.
-4. Backend reads and writes application data in PostgreSQL.
+I kept the system small on purpose. A single EC2 host is enough to demonstrate reverse proxying, containerized runtime management, PostgreSQL operations, controlled deployment hooks, and backup discipline without introducing infrastructure that the workload does not need yet. S3 and CloudFront are an easy win because they reduce load on the application host and make frontend releases more deterministic.
 
-### Label format submission helper flow
+The database stays on the same VM for the same reason: it minimizes moving parts while the platform is still relatively compact. That does not mean the design is treated as final. The repo documents a clear path toward RDS once higher availability, stronger isolation, or operational overhead justify the shift.
 
-1. Frontend requests a signed upload URL from a Lambda endpoint.
-2. Browser uploads PPT/PPTX directly to a private S3 bucket.
-3. Lambda stores submission metadata and sends a notification email.
+## Technology Boundary
 
-## Stack Observed From The Codebase
+The public repository intentionally omits the proprietary backend, but the frontend stack observed from the private codebase included React 18, TypeScript, Vite, Tailwind CSS, Radix/shadcn UI primitives, TanStack Query, and export/import libraries such as `xlsx`, `jspdf`, and `pptxgenjs`. I kept that context here because it explains why the deployment is split into static asset delivery plus an API runtime rather than a purely server-rendered model.
 
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui and Radix UI
-- React Router v6
-- TanStack Query
-- `xlsx` for Excel import
-- `jspdf` and `pptxgenjs` for label export
-- `jsbarcode` for barcode generation
+## What Is Deliberately Missing
 
-## Architectural Rationale
-
-- S3 + CloudFront keeps frontend delivery simple, fast, and inexpensive.
-- Single EC2 host reduces early-stage complexity while still allowing TLS, Dockerized runtime, and controlled release hooks.
-- Dockerized PostgreSQL keeps the database private and easy to back up, while leaving a clear future migration path to RDS.
-- Separate release and migration stages reduce deployment blast radius.
-
-## Boundaries Intentionally Omitted
-
-- Proprietary backend source
-- Internal schema and business rules beyond sanitized samples
-- Real production identifiers and operational naming
-- Customer data, business metrics, and internal runbooks
+The private product logic, the real schema, real operational naming, customer data, and exact production identifiers are not part of this repository. The goal is to preserve the engineering story, not to publish sensitive implementation detail.

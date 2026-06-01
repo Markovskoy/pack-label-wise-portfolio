@@ -1,26 +1,9 @@
 # Roadmap
 
-## Near-Term
+The current repository already covers the core delivery story, but there are a few obvious places to push it further without turning the portfolio into noise.
 
-- Publish sanitized architecture and delivery documentation
-- Add GitHub Pages or MkDocs hosting
-- Add more redacted screenshots and a short demo clip
+The first is stronger operational evidence. The next iteration should include restore-drill notes, an example incident write-up, and a more concrete synthetic monitoring path. Those additions would make the SRE section feel less like intent and more like a documented operating habit.
 
-## Ops / Platform
+The second is infrastructure evolution. If the application grows, the main architectural pressure point is PostgreSQL on a single EC2 host. When availability, maintenance overhead, or recovery requirements start to dominate, the right next artifact for this repo would be an ADR that explains when and why to move to RDS.
 
-- Add backup restore drill documentation with sample evidence
-- Add synthetic health checks
-- Add a centralized logging and metrics example stack
-- Add budget alerts and cost dashboard examples
-
-## Infrastructure Evolution
-
-- Revisit single-host PostgreSQL and define RDS migration criteria
-- Introduce stronger secret rotation procedures
-- Consider immutable backend build artifacts if the private backend repo is later separated cleanly
-
-## Portfolio Improvements
-
-- Add ADRs for key tradeoffs
-- Add a one-page incident write-up example
-- Add before/after CI/CD diagrams for release maturity storytelling
+The third is portfolio polish. More redacted screenshots, a short deployment sequence diagram, and a few sharper before/after examples from CI/CD maturity would make the public presentation even stronger while staying safely sanitized.
